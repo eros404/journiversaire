@@ -26,3 +26,15 @@ Date.prototype.toFrenchFormat = function () {
             year: 'numeric'
         })
 }
+Date.prototype.toHtmlFormat = function () {
+    return this.toISOString().split("T")[0];
+}
+
+function getBirthdateFromUrl() {
+    const params = new URL(document.location.toString()).searchParams;
+    if (!params.has('birthdate'))
+        return null;
+    const birthdateString = params.get('birthdate') ?? '';
+    const birthdate = new Date(birthdateString);
+    return isNaN(birthdate) ? null : birthdate;
+}

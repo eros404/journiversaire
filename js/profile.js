@@ -1,29 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const params = new URL(document.location.toString()).searchParams;
-    if (!params.has('birthdate'))
+    const birthdate = getBirthdateFromUrl();
+    if (birthdate == null)
         window.location.replace('/index.html');
-    const birthdateString = params.get('birthdate') ?? '';
-    const birthdate = new Date(birthdateString);
-    if (isNaN(birthdate))
-        window.location.replace('/index.html');
-
+    const returnLink = document.getElementById('return-link');
+    returnLink.setAttribute(
+        'href',
+        returnLink.getAttribute('href') + `?birthdate=${birthdate.toHtmlFormat()}`
+    )
     document.getElementById('birthdate').textContent = birthdate.toFrenchFormat()
     const diffDays = new Date().diffDays(birthdate);
     const container = document.getElementById("profile-container")
     const timeline = new UserTimeline()
     timeline.add(
-        new TimelineItem(diffDays, 1, birthdate.addDays(diffDays)))
-    for (var i = 1; i < 4; i++) {
+        new TimelineItem(diffDays, birthdate.addDays(diffDays)))
+    for (var i = 1; i <= 15; i++) {
+        const days = i * 5000
         timeline.add(
-            new TimelineItem(i, 10000, birthdate.addDays(i * 10000))
+            new TimelineItem(days, birthdate.addDays(days))
         )
     }
-    for (var i = 1; i < 30; i++) {
-        timeline.add(
-            new TimelineItem(i, 1000, birthdate.addDays(i * 1000))
-        )
-    }
-    const allElements = timeline.getSorted();
+    const allElements = timeline.getArraySorted();
     let todayElement = null
     allElements.forEach((item, i) => {
         setTimeout(() => {
@@ -44,11 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 class TimelineItem {
-    constructor(occurence, multiple, date) {
-        this.occurence = occurence;
-        this.multiple = multiple;
+    constructor(nbDays, date) {
         this.date = date;
-        this.total = occurence * multiple
+        this.nbDays = nbDays
         this.numberFormat = new Intl.NumberFormat('fr-FR')
     }
     createElement() {
@@ -56,7 +50,10 @@ class TimelineItem {
         node.classList.add('timeline-item');
         if (this.date.isToday())
             node.classList.add('today');
-        node.setAttribute('data-multiple', this.multiple);
+        [10_000].forEach(multiple => {
+            if (this.nbDays % multiple === 0)
+                node.setAttribute('data-multiple', multiple);
+        })
         const dateElement = document.createElement('div');
         dateElement.classList.add('date');
         dateElement.textContent = this.date.toFrenchFormat();
@@ -66,9 +63,9 @@ class TimelineItem {
         occurenceElement.classList.add('occurence')
         occurenceElement.appendChild(
             document.createTextNode(
-                this.numberFormat.format(this.total)))
+                this.numberFormat.format(this.nbDays)))
         const sup = document.createElement('sup')
-        sup.textContent = this.total === 1 ? 'er' : 'ème'
+        sup.textContent = this.nbDays === 1 ? 'er' : 'ème'
         occurenceElement.appendChild(sup)
         eventElement.appendChild(occurenceElement)
         const eventSpan = document.createElement('span')
@@ -92,7 +89,7 @@ class UserTimeline {
         if (!existing || existing.multiple < item.multiple)
             this.dictionary[itemTime] = item;
     }
-    getSorted() {
+    getArraySorted() {
         return Object.values(this.dictionary)
             .sort((a, b) => a.getTime() - b.getTime())
     }
