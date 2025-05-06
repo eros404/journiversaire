@@ -1,8 +1,6 @@
 Date.prototype.diffDays = function (date, mode = 'solar') {
-    var utcThis = Date.UTC(this.getFullYear(), this.getMonth(), this.getDate(),
-        this.getHours(), this.getMinutes(), this.getSeconds(), this.getMilliseconds());
-    var utcOther = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(),
-        date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+    var utcThis = Date.UTC(this.getFullYear(), this.getMonth(), this.getDate());
+    var utcOther = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
     const nbSeconds = mode === 'stellar' ? 86164_098 : 86400_000;
     return Math.floor((utcThis - utcOther) / nbSeconds);
 }

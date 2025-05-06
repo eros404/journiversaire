@@ -1,10 +1,11 @@
-h1 {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: .1rem solid grey;
     a {
         text-decoration: none;
+        font-size: 1.75em;
     }
 }
 #profile-container {
