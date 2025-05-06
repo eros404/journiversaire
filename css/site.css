@@ -1,0 +1,23 @@
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    font-size: 14px;
+    font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 .5rem;
+}
+h1 {
+    text-align: center;
+    letter-spacing: .1rem;
+    font-size: 1.75em;
+}

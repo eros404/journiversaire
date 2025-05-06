@@ -1,0 +1,52 @@
+#profile-container {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 1rem;
+    row-gap: 1rem;
+    align-items: center;
+    flex-grow: 1;
+    overflow: auto;
+    padding-bottom: 1rem;
+    scroll-snap-type: y mandatory;
+    .timeline-item {
+        --radius: .5rem;
+        scroll-snap-align: start;
+        border-radius: var(--radius);
+        grid-column-end: span 2;
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-auto-rows: 1fr;
+        border: cadetblue solid .1rem;
+        padding: 0;
+        animation: fadeIn .5s ease-in-out;
+        div {
+            padding: .5rem .75rem .25rem .75rem;
+        }
+        .date {
+            --radius-inner: calc(var(--radius) - .1rem);
+            border-top-left-radius: var(--radius-inner);
+            border-bottom-left-radius: var(--radius-inner);
+            background-color: cadetblue;
+            color: white;
+            font-weight: 600;
+            align-content: center;
+            text-align: center;
+        }
+        &.today {
+            border-color: coral;
+            .date {
+                background-color: coral;
+            }
+        }
+        &[data-multiple="10000"] {
+            box-shadow: -.1rem .1rem .1rem grey;
+            .occurence {
+                font-weight: 800;
+            }
+        }
+    }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
