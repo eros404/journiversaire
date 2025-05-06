@@ -7,6 +7,7 @@ html, body {
     box-sizing: border-box;
 }
 body {
+    background-color: whitesmoke;
     font-size: 14px;
     font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
 }
