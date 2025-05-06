@@ -7,16 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
         'href',
         returnLink.getAttribute('href') + `?birthdate=${birthdate.toHtmlFormat()}`
     )
-    document.getElementById('birthdate').textContent = birthdate.toFrenchFormat()
-    const diffDays = new Date().diffDays(birthdate);
+    document.getElementById('birthdate').textContent = birthdate.toFrenchFormat();
+    const mode = 'solar';
+    const diffDays = new Date().diffDays(birthdate, mode);
     const container = document.getElementById("profile-container")
     const timeline = new UserTimeline()
     timeline.add(
-        new TimelineItem(diffDays, birthdate.addDays(diffDays)))
+        new TimelineItem(diffDays, birthdate.addDays(diffDays, mode)))
     for (var i = 1; i <= 15; i++) {
         const days = i * 5000
         timeline.add(
-            new TimelineItem(days, birthdate.addDays(days))
+            new TimelineItem(days, birthdate.addDays(days, mode))
         )
     }
     const allElements = timeline.getArraySorted();
@@ -84,13 +85,11 @@ class UserTimeline {
         this.dictionary = {};
     }
     add(item) {
-        const itemTime = item.getTime()
-        const existing = this.dictionary[itemTime];
-        if (!existing || existing.multiple < item.multiple)
-            this.dictionary[itemTime] = item;
+        this.dictionary[item.getTime()] = item;
     }
     getArraySorted() {
-        return Object.values(this.dictionary)
-            .sort((a, b) => a.getTime() - b.getTime())
+        return Object.entries(this.dictionary)
+            .sort((a, b) => a[0] - b[0])
+            .map(kv => kv[1])
     }
 }
