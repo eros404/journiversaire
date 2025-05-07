@@ -8,36 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
         returnLink.getAttribute('href') + `?birthdate=${birthdate.toHtmlFormat()}`
     )
     document.getElementById('birthdate').textContent = birthdate.toFrenchFormat();
-    const mode = 'solar';
-    const diffDays = new Date().diffDays(birthdate, mode);
-    const container = document.getElementById("profile-container")
     const timeline = new UserTimeline()
-    timeline.add(
-        new TimelineItem(diffDays, birthdate.addDays(diffDays, mode)))
-    for (var i = 1; i <= 15; i++) {
-        const days = i * 5000
-        timeline.add(
-            new TimelineItem(days, birthdate.addDays(days, mode))
-        )
-    }
-    const allElements = timeline.getArraySorted();
-    let todayElement = null
-    allElements.forEach((item, i) => {
-        setTimeout(() => {
-            const el = item.createElement();
-            container.appendChild(el)
-            if (item.date.isToday()) {
-                todayElement = el;
-            }
-        }, i * 25)
-    });
-    setTimeout(() => {
-        todayElement.scrollIntoView({
-            block: "start",
-            inline: "nearest",
-            behavior: "smooth"
+    const changeMode = document.getElementById('change-mode-button')
+    timeline.build(birthdate, changeMode.getAttribute('data-value'))
+    timeline.draw(true);
+    changeMode
+        .addEventListener('click', () => {
+            changeMode.setAttribute(
+                'data-value',
+                timeline.currentMode === 'solar' ? 'stellar' : 'solar')
+            timeline.build(
+                birthdate, changeMode.getAttribute('data-value'));
+            timeline.draw()
         })
-    }, allElements.length * 25)
 })
 
 class TimelineItem {
@@ -84,6 +67,19 @@ class UserTimeline {
     constructor() {
         this.dictionary = {};
     }
+    build(birthdate, mode = 'solar') {
+        this.currentMode = mode;
+        this.dictionary = {}
+        const diffDays = new Date().diffDays(birthdate, mode);
+        this.add(
+            new TimelineItem(diffDays, new Date()))
+        for (var i = 1; i <= 15; i++) {
+            const days = i * 5000
+            this.add(
+                new TimelineItem(days, birthdate.addDays(days, mode))
+            )
+        }
+    }
     add(item) {
         this.dictionary[item.getTime()] = item;
     }
@@ -91,5 +87,28 @@ class UserTimeline {
         return Object.entries(this.dictionary)
             .sort((a, b) => a[0] - b[0])
             .map(kv => kv[1])
+    }
+    draw(scrollToTodayAfter = false) {
+        const container = document.getElementById("profile-container");
+        container.innerHTML = ''
+        const allElements = this.getArraySorted();
+        let todayElement = null
+        allElements.forEach((item, i) => {
+            setTimeout(() => {
+                const el = item.createElement();
+                container.appendChild(el)
+                if (item.date.isToday()) {
+                    todayElement = el;
+                }
+            }, i * 25)
+        });
+        if (scrollToTodayAfter)
+            setTimeout(() => {
+                todayElement.scrollIntoView({
+                    block: "start",
+                    inline: "nearest",
+                    behavior: "smooth"
+                })
+            }, allElements.length * 25)
     }
 }

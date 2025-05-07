@@ -1,15 +1,17 @@
+const solar = 86400_000
+const stellar = 86164_098
+
 Date.prototype.diffDays = function (date, mode = 'solar') {
     var utcThis = Date.UTC(this.getFullYear(), this.getMonth(), this.getDate());
     var utcOther = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-    const nbSeconds = mode === 'stellar' ? 86164_098 : 86400_000;
-    return Math.floor((utcThis - utcOther) / nbSeconds);
+    return mode === 'stellar'
+        ? Math.floor((solar * (utcThis - utcOther) / stellar) / stellar)
+        : Math.floor((utcThis - utcOther) / solar);
 }
 Date.prototype.addDays = function (days, mode = 'solar') {
-    const nbSeconds = mode === 'stellar' ? 86164_098 : 86400_000;
-    const date = new Date(this.valueOf());
-    date.setMilliseconds(
-        date.getMilliseconds() + days * nbSeconds);
-    return date;
+    const nbSeconds = mode === 'stellar' ? stellar : solar;
+    const current = this.getTime() / solar * nbSeconds
+    return new Date(current + days * nbSeconds);
 }
 Date.prototype.isToday = function () {
     const today = new Date();

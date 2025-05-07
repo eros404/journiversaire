@@ -3,9 +3,33 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: .1rem solid grey;
+    padding: 1rem 0rem .5rem 0rem;
+    margin-bottom: .5rem;
+    .actions-container {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+    }
     a {
-        text-decoration: none;
         font-size: 1.75em;
+        text-decoration: none;
+    }
+    button {
+        font-size: 1.5em;
+        border-radius: .5rem;
+        border-color: coral;
+        padding: .25rem .30rem .15rem .30rem;
+    }
+    h1 {
+        margin: 0;
+    }
+}
+#change-mode-button {
+    &[data-value="solar"]:after {
+        content: '☀️';
+    }
+    &[data-value="stellar"]:after {
+        content: '🌍';
     }
 }
 #profile-container {
