@@ -73,7 +73,7 @@ class UserTimeline {
         const diffDays = new Date().diffDays(birthdate, mode);
         this.add(
             new TimelineItem(diffDays, new Date()))
-        for (var i = 1; i <= 15; i++) {
+        for (var i = 1; i <= 8; i++) {
             const days = i * 5000
             this.add(
                 new TimelineItem(days, birthdate.addDays(days, mode))
@@ -81,12 +81,11 @@ class UserTimeline {
         }
     }
     add(item) {
-        this.dictionary[item.getTime()] = item;
+        this.dictionary[item.date.toHtmlFormat()] = item;
     }
     getArraySorted() {
-        return Object.entries(this.dictionary)
-            .sort((a, b) => a[0] - b[0])
-            .map(kv => kv[1])
+        return Object.values(this.dictionary)
+            .sort((a, b) => a.getTime() - b.getTime())
     }
     draw(scrollToTodayAfter = false) {
         const container = document.getElementById("profile-container");
