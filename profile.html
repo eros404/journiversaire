@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journiversaire</title>
-    <script src="/js/date.js" defer></script>
-    <script src="/js/profile.js" defer></script>
-    <link rel="stylesheet" href="/css/site.css" />
+    <script src="/js/profile.js" type="module"></script>
     <link rel="stylesheet" href="/css/profile.css" />
     <link rel="icon" href="/favicon.svg">
 </head>
@@ -24,7 +22,20 @@
                 <span id="birthdate"></span> 🎂
             </h1>
         </header>
-        <div id="profile-container"></div>
+        <div id="timeline-container">
+            <div id="profile-container"></div>
+            <div id="search-form">
+                <div class="timeline-item search-item">
+                    <div class="date">
+                        <input type="date" id="search-date" />
+                    </div>
+                    <div>
+                        <input type="number" id="search-nb-days" step="100" min="1" />
+                        🔍
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 </html>

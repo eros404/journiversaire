@@ -1,3 +1,5 @@
+import { getBirthdateFromUrl } from '/js/date.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const birthdate = getBirthdateFromUrl();
     const picker = document.getElementById('birthdate-picker');

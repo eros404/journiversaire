@@ -1,3 +1,5 @@
+@import url("/css/site.css");
+
 header {
     display: flex;
     justify-content: space-between;
@@ -24,6 +26,9 @@ header {
         margin: 0;
     }
 }
+#search-form {
+    padding: 1rem 0rem .5rem 0rem;
+}
 #change-mode-button {
     &[data-value="solar"]:after {
         content: '☀️';
@@ -32,7 +37,10 @@ header {
         content: '🌍';
     }
 }
-#profile-container {
+#profile-container, #search-form {
+    display: contents;
+}
+#timeline-container {
     display: grid;
     grid-template-columns: max-content max-content;
     grid-auto-rows: max-content;
@@ -45,44 +53,59 @@ header {
     overflow: auto;
     padding-bottom: 1rem;
     scroll-snap-type: y mandatory;
-    .timeline-item {
-        --radius: .5rem;
-        scroll-snap-align: start;
-        background-color: white;
-        border-radius: var(--radius);
-        grid-column-end: span 2;
-        display: grid;
-        grid-template-columns: subgrid;
-        grid-auto-rows: 1fr;
-        border: cadetblue solid .1rem;
-        padding: 0;
-        animation: fadeIn .5s ease-in-out;
-        div {
-            padding: .5rem .75rem .25rem .75rem;
-        }
+}
+.timeline-item {
+    --radius: .5rem;
+    scroll-snap-align: start;
+    background-color: white;
+    border-radius: var(--radius);
+    grid-column-end: span 2;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-auto-rows: 1fr;
+    border: cadetblue solid .1rem;
+    padding: 0;
+    animation: fadeIn .5s ease-in-out;
+    div {
+        padding: .5rem .75rem .25rem .75rem;
+    }
+    .date {
+        --radius-inner: calc(var(--radius) - .1rem);
+        border-top-left-radius: var(--radius-inner);
+        border-bottom-left-radius: var(--radius-inner);
+        background-color: cadetblue;
+        color: white;
+        font-weight: 600;
+        align-content: center;
+        text-align: center;
+    }
+    &.today {
+        border-color: coral;
         .date {
-            --radius-inner: calc(var(--radius) - .1rem);
-            border-top-left-radius: var(--radius-inner);
-            border-bottom-left-radius: var(--radius-inner);
-            background-color: cadetblue;
-            color: white;
-            font-weight: 600;
-            align-content: center;
-            text-align: center;
-        }
-        &.today {
-            border-color: coral;
-            .date {
-                background-color: coral;
-            }
-        }
-        &[data-multiple="10000"] {
-            box-shadow: -.1rem .2rem .1rem grey;
-            .occurence {
-                font-weight: 800;
-            }
+            background-color: coral;
         }
     }
+    &.search-item {
+        border-color: cornflowerblue;
+        .date {
+            background-color: cornflowerblue;
+        }
+    }
+    &[data-multiple="10000"] {
+        box-shadow: -.1rem .2rem .1rem grey;
+        .occurence {
+            font-weight: 800;
+        }
+    }
+}
+#search-date, #search-nb-days {
+    background-color: inherit;
+    color: inherit;
+    border: none;
+    font-weight: inherit;
+}
+#search-nb-days {
+    width: 10em;
 }
 @keyframes fadeIn {
     from { opacity: 0; }

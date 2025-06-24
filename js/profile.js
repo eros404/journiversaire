@@ -1,3 +1,5 @@
+import { getBirthdateFromUrl } from '/js/date.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const birthdate = getBirthdateFromUrl();
     if (birthdate == null)
@@ -21,6 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 birthdate, changeMode.getAttribute('data-value'));
             timeline.draw()
         })
+    const searchDate = document.getElementById('search-date');
+    const searchNbDays = document.getElementById('search-nb-days');
+    searchDate.addEventListener('change', (e) => {
+        searchNbDays.value = new Date(e.target.value)
+            .diffDays(birthdate, changeMode.getAttribute('data-value'))
+    })
+    searchNbDays.addEventListener('change', (e) => {
+        searchDate.value = birthdate.addDays(e.target.value, changeMode.getAttribute('data-value')).toHtmlFormat()
+    })
 })
 
 class TimelineItem {

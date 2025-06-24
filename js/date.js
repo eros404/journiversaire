@@ -32,7 +32,7 @@ Date.prototype.toHtmlFormat = function () {
     return this.toISOString().split("T")[0];
 }
 
-function getBirthdateFromUrl() {
+export function getBirthdateFromUrl() {
     const params = new URL(document.location.toString()).searchParams;
     if (!params.has('birthdate'))
         return null;

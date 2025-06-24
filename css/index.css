@@ -1,3 +1,5 @@
+@import url("/css/site.css");
+
 main {
     justify-content: center;
 }
@@ -27,4 +29,10 @@ main {
     min-width: 12rem;
     border-width: .125rem;
     border-color: cadetblue;
+}
+a {
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: .5rem;
 }
